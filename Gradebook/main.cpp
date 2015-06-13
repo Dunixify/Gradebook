@@ -179,10 +179,10 @@ int main(){
 							cout << "Category grades:" << endl;
 							for (int i = 0; i < section1->numCats; i++){
 								cout << i + 1 << ". " << section1->categories[i].name << ": " << section1->students[studNum - 1].getPoints(i)
-									<< " / " << section1->categories[i].getPoints() << " (" << section1->students[studNum - 1].getPoints(i) / section1->categories[i].getPoints() << " %)" << endl;
+									<< " / " << section1->categories[i].getPoints() << " (" << section1->students[studNum - 1].getPoints(i) / section1->categories[i].getPoints() * 100 << " %)" << endl;
 								totalGrade += section1->students[studNum - 1].getWeightedPointsForCategory(i) / section1->categories[i].getPoints();
 							}
-							cout << "Overall: " << totalGrade << endl;
+							cout << "Overall: " << totalGrade <<" %" << endl;
 							continue;
 						}
 						else if (option == 3){

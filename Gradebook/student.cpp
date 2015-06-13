@@ -42,12 +42,12 @@ void student::removeCategory(int index){
 	}
 	else if (numCats == 2){
 		if (index == 0){
-			category* temp = &categories[1];
+			category* temp = new category{ categories[1] };
 			delete[] categories;
 			categories = temp;
 		}
 		else{
-			category* temp = &categories[0];
+			category* temp = new category{ categories[0] };
 			delete[] categories;
 			categories = temp;
 		}

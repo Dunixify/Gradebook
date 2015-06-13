@@ -85,7 +85,13 @@ void section::editCategory(int index){
 					continue;
 				}
 				else{
+					int numAss = categories[index].numAssignments;
 					categories[index].editAssignmentUnit(assNum - 1);
+					if (categories[index].numAssignments < numAss){
+						for (int i = 0; i < numStuds; i++){
+							students[i].categories[index].removeAssignmentUnit(assNum - 1);
+						}
+					}
 				}
 			}
 		}
@@ -125,7 +131,8 @@ void section::addCategory(string n, float w){
 	//	}
 	else{
 		if (numCats == 0){
-			categories = new category{category(n,w)};
+			categories = new category[1];
+			categories[0] = category(n, w);
 			for (int i = 0; i < numStuds; i++){
 				students[i].addCategory(categories[0]);
 			}
@@ -141,12 +148,12 @@ void section::addCategory(string n, float w){
 				temp[i] = categories[i];
 			}
 			temp[numCats] = category(n, w);
-			if (numCats == 1){
-				delete categories;
-			}
-			else{
+			//if (numCats == 1){
+			//	delete categories;
+			//}
+			//else{
 				delete[] categories;
-			}
+			//}
 			categories = temp;
 			for (int i = 0; i < numStuds; i++){
 				students[i].addCategory(categories[numCats]);
@@ -160,16 +167,16 @@ void section::addCategory(string n, float w){
 }
 void section::removeCategory(int index){
 	if (numCats == 1){
-		delete[] categories;
+		delete categories;
 	}
 	else if (numCats == 2){
 		if (index == 0){
-			category* temp = &categories[1];
+			category* temp = new category{ categories[1] };
 			delete[] categories;
 			categories = temp;
 		}
 		else{
-			category* temp = &categories[0];
+			category* temp = new category{ categories[0] };
 			delete[] categories;
 			categories = temp;
 		}
@@ -321,14 +328,14 @@ void section::removeStudent(int index){
 }
 
 void section::printCategories(){
-	if (numCats == 1){
+	/*if (numCats == 1){
 		cout << 1 << ". " << categories << endl;
 	}
-	else{
+	else{*/
 		for (int i = 0; i < numCats; i++){
 			cout << i + 1 << ". " << categories[i].name /*<< ": " << categories[i].weight << "%" */ << endl;
 		}
-	}
+//	}
 	
 }
 void section::printStudents(){

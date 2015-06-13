@@ -124,20 +124,33 @@ void section::addCategory(string n, float w){
 	//		categories[0] = category(n, w);
 	//	}
 	else{
-		category *temp = new category[numCats + 1];
-		for (int i = 0; i < numCats; i++){
-			if (categories[i].name == n){
-				cout << "Category name is already in use." << endl << endl;
-				delete[] temp;
-				return;
+		if (numCats == 0){
+			categories = new category{category(n,w)};
+			for (int i = 0; i < numStuds; i++){
+				students[i].addCategory(categories[0]);
 			}
-			temp[i] = categories[i];
 		}
-		temp[numCats] = category(n, w);
-		delete[] categories;
-		categories = temp;
-		for (int i = 0; i < numStuds; i++){
-			students[i].addCategory(categories[numCats]);
+		else{
+			category *temp = new category[numCats + 1];
+			for (int i = 0; i < numCats; i++){
+				if (categories[i].name == n){
+					cout << "Category name is already in use." << endl;
+					delete[] temp;
+					return;
+				}
+				temp[i] = categories[i];
+			}
+			temp[numCats] = category(n, w);
+			if (numCats == 1){
+				delete categories;
+			}
+			else{
+				delete[] categories;
+			}
+			categories = temp;
+			for (int i = 0; i < numStuds; i++){
+				students[i].addCategory(categories[numCats]);
+			}
 		}
 		totalWeight += w;
 		numCats++;
@@ -146,28 +159,45 @@ void section::addCategory(string n, float w){
 	//	}
 }
 void section::removeCategory(int index){
-	category* temp = new category[numCats - 1];
-	if (index == 0){
-		for (int i = 1; i < numCats; i++){
-			temp[i - 1] = categories[i];
-		}
+	if (numCats == 1){
+		delete[] categories;
 	}
-	else if (index == numCats - 1){
-		for (int i = 0; i < numCats - 1; i++){
-			temp[i] = categories[i];
+	else if (numCats == 2){
+		if (index == 0){
+			category* temp = &categories[1];
+			delete[] categories;
+			categories = temp;
+		}
+		else{
+			category* temp = &categories[0];
+			delete[] categories;
+			categories = temp;
 		}
 	}
 	else{
-		for (int i = 0; i < index; i++){
-			temp[i] = categories[i];
+		category* temp = new category[numCats - 1];
+		if (index == 0){
+			for (int i = 1; i < numCats; i++){
+				temp[i - 1] = categories[i];
+			}
 		}
-		for (int i = index + 1; i < numCats; i++){
-			temp[i - 1] = categories[i];
+		else if (index == numCats - 1){
+			for (int i = 0; i < numCats - 1; i++){
+				temp[i] = categories[i];
+			}
 		}
+		else{
+			for (int i = 0; i < index; i++){
+				temp[i] = categories[i];
+			}
+			for (int i = index + 1; i < numCats; i++){
+				temp[i - 1] = categories[i];
+			}
+		}
+		delete[] categories;
+		categories = temp;
 	}
 	totalWeight -= categories[index].weight;
-	delete[] categories;
-	categories = temp;
 	for (int i = 0; i < numStuds; i++){
 		students[i].removeCategory(index);
 	}
@@ -240,7 +270,7 @@ void section::editStudent(int index){
 }
 void section::addStudent(string n){
 	if (numStuds == 0){
-		//		delete[] categories;
+		//		delete[] students;
 		students = new student{ n };
 		for (int i = 0; i < numCats; i++){
 			students[0].addCategory(categories[i]);
@@ -255,7 +285,12 @@ void section::addStudent(string n){
 		for (int i = 0; i < numCats; i++){
 			temp[numStuds].addCategory(categories[i]);
 		}
-		delete[] students;
+		if (numStuds == 1){
+			delete students;
+		}
+		else{
+			delete[] students;
+		}
 		students = temp;
 	}
 	numStuds++;
@@ -286,9 +321,15 @@ void section::removeStudent(int index){
 }
 
 void section::printCategories(){
-	for (int i = 0; i < numCats; i++){
-		cout << i + 1 << ". " << categories[i].name /*<< ": " << categories[i].weight << "%" */ << endl;
+	if (numCats == 1){
+		cout << 1 << ". " << categories << endl;
 	}
+	else{
+		for (int i = 0; i < numCats; i++){
+			cout << i + 1 << ". " << categories[i].name /*<< ": " << categories[i].weight << "%" */ << endl;
+		}
+	}
+	
 }
 void section::printStudents(){
 	for (int i = 0; i < numStuds; i++){

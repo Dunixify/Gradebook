@@ -121,6 +121,6 @@ void category::printAssignments(){
 	cout << "Category: " << name << "  Weight: " << weight << "%" << endl;
 	cout << "Assignments:" << endl;
 	for (int i = 0; i<numAssignments; i++){
-		cout << i + 1 << ". " << assignments[i].name << ": " << assignments[i].getPoints() << " Points" << endl;
+		cout << i + 1 << ". " << assignments[i].name << " : " << assignments[i].getPoints() << " Points" << endl;
 	}
 }

@@ -64,15 +64,14 @@ int main(){
 			cout << "Student " << "\"" << name << "\" added to section \"" << section1->name << ".\"" << endl;
 		}
 		else if (option == 3){
+			if (section1->numCats == 0){
+				cout << "There are currently no categories of assignments in this section." << endl;
+				break;
+			}
 			int catNum = 1;
 			while (catNum){//category list menu
 				section1->printCategories();
 				cout << section1->numCats + 1 << ". " << "Previous menu" << endl << endl;
-				if (section1->numCats == 0){
-					cout << "There are currently no categories of assignments in this section." << endl;
-					break;
-				}
-				else{
 					cout << "Edit category number: ";
 					cin >> catNum;
 					cout << endl;
@@ -86,7 +85,6 @@ int main(){
 					else{
 						section1->editCategory(catNum - 1);
 					}
-				}
 			}
 		}
 		else if (option == 4){//edit student info /scores

@@ -2,6 +2,7 @@
 student::student(){
 	name = "";
 	grade = 0.0;
+	numCats = 0;
 	//headCategory = NULL; 
 	//tailCategory = NULL;
 	//next = NULL;
@@ -9,7 +10,8 @@ student::student(){
 student::student(string n){
 	name = n;
 	grade = 0.0;
-	//headCategory = NULL;s
+	numCats = 0;
+	//headCategory = NULL;
 	//tailCategory = NULL;
 	//next = NULL;
 }
@@ -24,33 +26,55 @@ void student::addCategory(category c){
 			temp[i] = categories[i];
 		}
 		temp[numCats] = category(c);
-		delete[] categories;
+		if (numCats == 1){
+			delete categories;
+		}
+		else{
+			delete[] categories;
+		}
 		categories = temp;
 	}
 	numCats++;
 }
 void student::removeCategory(int index){
-	category* temp = new category[numCats - 1];
-	if (index == 0){
-		for (int i = 1; i < numCats; i++){
-			temp[i - 1] = categories[i];
-		}
+	if (numCats == 1){
+		delete categories;
 	}
-	else if (index == numCats - 1){
-		for (int i = 0; i < numCats - 1; i++){
-			temp[i] = categories[i];
+	else if (numCats == 2){
+		if (index == 0){
+			category* temp = &categories[1];
+			delete[] categories;
+			categories = temp;
+		}
+		else{
+			category* temp = &categories[0];
+			delete[] categories;
+			categories = temp;
 		}
 	}
 	else{
-		for (int i = 0; i < index; i++){
-			temp[i] = categories[i];
+		category* temp = new category[numCats - 1];
+		if (index == 0){
+			for (int i = 1; i < numCats; i++){
+				temp[i - 1] = categories[i];
+			}
 		}
-		for (int i = index + 1; i < numCats; i++){
-			temp[i - 1] = categories[i];
+		else if (index == numCats - 1){
+			for (int i = 0; i < numCats - 1; i++){
+				temp[i] = categories[i];
+			}
 		}
+		else{
+			for (int i = 0; i < index; i++){
+				temp[i] = categories[i];
+			}
+			for (int i = index + 1; i < numCats; i++){
+				temp[i - 1] = categories[i];
+			}
+		}
+		delete[] categories;
+		categories = temp;
 	}
-	delete[] categories;
-	categories = temp;
 	numCats--;
 }
 float student::getPoints(int ci, int ai){

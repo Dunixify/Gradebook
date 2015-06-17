@@ -84,7 +84,7 @@ void category::addAssignmentUnit(float pts, string n){
 	else{
 		assignmentUnit* newAssignments = new assignmentUnit[numAssignments + 1];
 		for (int i = 0; i < numAssignments; i++){
-			newAssignments[i] = assignments[i];
+			newAssignments[i] = assignmentUnit(assignments[i].name, assignments[i].getPoints());
 		}
 		newAssignments[numAssignments] = assignmentUnit(n, pts);
 		delete[] assignments;

@@ -18,14 +18,23 @@ student::student(string n){
 void student::addCategory(category c){
 	if (numCats == 0){
 		//		delete[] categories;
-		categories = new category{ c };
+		categories = new category[1];
+		categories[0].name = c.name;
+		categories[0].numAssignments = 0;
+		for (int i = 0; i < c.numAssignments; i++){
+			categories[0].addAssignmentUnit(0.0, c.assignments[i].name);
+		}
 	}
 	else{
 		category* temp = new category[numCats + 1];
 		for (int i = 0; i < numCats; i++){
 			temp[i] = categories[i];
 		}
-		temp[numCats] = category(c);
+		categories[numCats].name = c.name;
+		categories[numCats].numAssignments = 0;
+		for (int i = 0; i < c.numAssignments; i++){
+			categories[numCats].addAssignmentUnit(0.0, c.assignments[i].name);
+		}
 		if (numCats == 1){
 			delete categories;
 		}
@@ -85,9 +94,9 @@ float student::getPoints(int ci){
 	//get points for specific category
 	return categories[ci].getPoints();
 }
-float student::getWeightedPointsForCategory(int ci){
-	return categories[ci].getPoints() * categories[ci].weight;
-}
+//float student::getWeightedPointsForCategory(int ci){
+//	return categories[ci].getPoints() * categories[ci].weight;
+//}
 void student::printCategories(){
 	for (int i = 0; i < numCats; i++){
 		cout << i + 1 << ". " << categories[i].name << endl;

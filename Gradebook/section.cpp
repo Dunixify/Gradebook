@@ -278,7 +278,7 @@ void section::editStudent(int index){
 void section::addStudent(string n){
 	if (numStuds == 0){
 		//		delete[] students;
-		students = new student{ n };
+		students = new student{ student(n) };
 		for (int i = 0; i < numCats; i++){
 			students[0].addCategory(categories[i]);
 		}

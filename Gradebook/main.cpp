@@ -1,24 +1,5 @@
 #include "section.h"
 
-//void addCategory(section *s){
-//		cout << "Category name: ";
-//		string categoryName;
-//		float categoryWeight;
-//		cin>>categoryName;
-//		cout << endl << "Category weight (percent): ";
-//		cin >> categoryWeight;
-//		s->addCategory(categoryName, categoryWeight);
-//		cout << endl << endl;
-//}
-//void addStudent(section *s){
-//		cout << "Student Name: ";
-//		string studentName;
-//		cin>>studentName;
-//		cout << endl << "Arbitraty integer for easy identification: ";
-//		int id;
-//		cin >> id;
-//		s->addStudent(studentName);
-//}
 int main(){
 	string sectionName;
 	cout << "Personal Gradebook" << endl << endl;
@@ -146,10 +127,60 @@ int main(){
 							break;
 						}
 						else if (subOption == 1){
-							//come back to this
+							int catNum = 1;
+							while (catNum){
+								for (int i = 0; i < section1->numCats; i++){
+									cout << i + 1 << ". " << section1->categories[i].name << " : " << section1->averageGrades(i) << " %" << endl;
+								}
+								cout << section1->numCats + 1 << ". " << "Overall : " << section1->averageGrades() << " %" << endl;
+								cout << section1->numCats + 2 << ". " << "Previous Menu" << endl;
+								cout << "Menu option number: ";
+								cin >> catNum;
+								if (catNum == section1->numCats + 2){
+									break;
+								}
+								else{
+									cout << "Invalid choice. Grades may be edited in this menu. Please try again." << endl;
+									continue;
+								}
+							}
 						}
 						else if (subOption == 2){
-							//come back to this
+							int catNum = 1;
+							while (catNum){
+								for (int i = 0; i < section1->numCats; i++){
+									cout << i + 1 << ". " << section1->categories[i].name << endl;
+								}
+								cout << section1->numCats + 1 << ". " << "Previous Menu" << endl;
+								cout << "Category containing assignment: ";
+								cin >> catNum;
+								if (catNum<1 || catNum>section1->numCats + 1){
+									cout << "Invalid choice. Please try again." << endl;
+									continue;
+								}
+								else if (catNum == section1->numCats + 1){
+									break;
+								}
+								else{
+									for (int i = 0; i < section1->categories[catNum - 1].numAssignments; i++){
+										cout << i + 1 << ". " << section1->categories[catNum - 1].assignments[i].name << ": " << 
+											section1->averageGrades(catNum-1,i) << " %" << endl;
+									}
+									cout << section1->categories[catNum - 1].numAssignments + 1 << ". " << "Previous Menu" << endl;
+									int option = 1;
+									while (option){
+										cout << "Menu option number: ";
+										cin >> option;
+										if (option == section1->categories[catNum - 1].numAssignments + 1){
+											break;
+										}
+										else{
+											cout << "Invalid choice. Please try again. Assignment scores may not be viewed or edited individually through this menu." << endl;
+											continue;
+										}
+									}
+								}
+							}
 						}
 						else{
 							cout << "Invalid choice. Please try again." << endl;
@@ -172,7 +203,42 @@ int main(){
 						cout << endl;
 
 						if (option == 1){
-							//come back to this
+							int catNum=1;
+							while (catNum){
+								for (int i = 0; i < section1->numCats; i++){
+									cout << i + 1 << ". " << section1->categories[i].name << endl;
+								}
+								cout << section1->numCats + 1 << ". " << "Previous Menu" << endl;
+								cout << "Category containing assignment: ";
+								cin >> catNum;
+								if (catNum<1 || catNum>section1->numCats+1){
+									cout << "Invalid choice. Please try again." << endl;
+									continue;
+								}
+								else if(catNum==section1->numCats+1){
+									break;
+								}
+								else{
+									for (int i = 0; i < section1->categories[catNum - 1].numAssignments; i++){
+										cout << i + 1 << ". " << section1->categories[catNum - 1].assignments[i].name << ": " << 
+											section1->students[studNum - 1].categories[catNum - 1].assignments[i].getPoints() << 
+											" / " << section1->categories[catNum - 1].assignments[i].getPoints() << " points" << endl;
+									}
+									cout << section1->categories[catNum - 1].numAssignments + 1 << ". " << "Previous Menu" << endl;
+									int option=1;
+									while (option){
+										cout << "Menu option number: ";
+										cin >> option;
+										if (option == section1->categories[catNum - 1].numAssignments + 1){
+											break;
+										}
+										else{
+											cout << "Invalid choice. Please try again. Assignment scores may not be viewed or edited individually through this menu." << endl;
+											continue;
+										}
+									}
+								}
+							}
 						}
 						else if (option == 2){
 							cout << section1->students[studNum - 1].name << endl;
@@ -197,7 +263,11 @@ int main(){
 			}
 		}
 		else if (option == 6){
-			break;
+			for (int i = 0; i < section1->numCats; i++){
+				section1->save(i);
+			}
+			section1->save();
+			continue;
 		}
 		else if (option == 7){
 			break;

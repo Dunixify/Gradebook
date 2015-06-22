@@ -7,7 +7,6 @@ class assignmentUnit{
 private:
 	float points;
 public:
-	//	assignmentUnit *next;
 	string name;
 	assignmentUnit(assignmentUnit*a);
 	float getPoints();

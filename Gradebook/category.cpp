@@ -5,36 +5,13 @@ category::category(){
 	points = 0.0;
 	weight = 0.0;
 	numAssignments = 0;
-	//head = NULL;
-	//tail = NULL;
-	//next = NULL;
 }
 category::category(string n, float w){
 	name = n;
 	points = 0.0;
 	weight = w;
 	numAssignments = 0;
-	//head = NULL;
-	//tail = NULL;
-	//next = NULL;
 }
-//category::category(category *c){
-//	name = c->name;
-//	points = c->getPoints();
-//	weight = c->weight;
-//	assignments = c->assignments;
-//	//head = c->head;s
-//	//tail = c->tail;
-//	//next = c->next;
-//	numAssignments = c->numAssignments;
-//}
-//category::category(category& c){
-//	name = c.name;
-//	points = c.getPoints();
-//	weight = c.weight;
-//	assignments = c.assignments;
-//	numAssignments = c.numAssignments;
-//}
 float category::getPoints(){
 	float totalPoints = 0;
 	for (int i = 0; i < numAssignments; i++){

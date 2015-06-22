@@ -9,9 +9,6 @@ private:
 
 public:
 	category* categories = new category[];
-	//category *headCategory;
-	//category *tailCategory;
-	//student *next;
 	string name;
 	int numCats = 0;
 	student();

@@ -3,17 +3,11 @@ student::student(){
 	name = "";
 	grade = 0.0;
 	numCats = 0;
-	//headCategory = NULL; 
-	//tailCategory = NULL;
-	//next = NULL;
 }
 student::student(string n){
 	name = n;
 	grade = 0.0;
 	numCats = 0;
-	//headCategory = NULL;
-	//tailCategory = NULL;
-	//next = NULL;
 }
 void student::addCategory(category c){
 	if (numCats == 0){
@@ -21,6 +15,7 @@ void student::addCategory(category c){
 		categories = new category[1];
 		categories[0].name = c.name;
 		categories[0].numAssignments = 0;
+		categories[0].weight = c.weight;
 		for (int i = 0; i < c.numAssignments; i++){
 			categories[0].addAssignmentUnit(0.0, c.assignments[i].name);
 		}
@@ -32,6 +27,7 @@ void student::addCategory(category c){
 		}
 		categories[numCats].name = c.name;
 		categories[numCats].numAssignments = 0;
+		categories[numCats].weight = c.weight;
 		for (int i = 0; i < c.numAssignments; i++){
 			categories[numCats].addAssignmentUnit(0.0, c.assignments[i].name);
 		}
@@ -94,9 +90,6 @@ float student::getPoints(int ci){
 	//get points for specific category
 	return categories[ci].getPoints();
 }
-//float student::getWeightedPointsForCategory(int ci){
-//	return categories[ci].getPoints() * categories[ci].weight;
-//}
 void student::printCategories(){
 	for (int i = 0; i < numCats; i++){
 		cout << i + 1 << ". " << categories[i].name << endl;

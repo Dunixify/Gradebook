@@ -8,10 +8,6 @@ section::section(){
 	totalWeight = 0.0;
 	numCats = 0;
 	numStuds = 0;
-	//headCategory = NULL;
-	//tailCategory = NULL;
-	//headStudent = NULL;
-	//tailStudent = NULL;
 }
 section::section(string n){
 	name = n;
@@ -19,23 +15,7 @@ section::section(string n){
 	totalWeight = 0.0;
 	numCats = 0;
 	numStuds = 0;
-	//headCategory = NULL;
-	//tailCategory = NULL;
-	//headStudent = NULL;
-	//tailStudent = NULL;
 }
-
-//void copyCategoryForStudent(category *c, student *s){
-//	assignmentUnit *current = h;
-//	category *copy = new category();
-//	copy->addAssignmentUnit(0.0, h->name);
-//	current = current->next;
-//	while (current != NULL){
-//		copy->addAssignmentUnit(0.0, current->name);
-//		current = current->next;
-//	}
-//	s->addCategory(copy);
-//}
 float section::getPoints(){
 	float totalPoints = 0;
 	for (int i = 0; i < numCats; i++){
@@ -123,12 +103,6 @@ void section::addCategory(string n, float w){
 		cout << "Category exceeds maximum weight by " << totalWeight + w - 100 << " %." << endl << endl;
 		return;
 	}
-	//else{
-	//	if (numCats == 0){
-	//		delete[] categories;
-	//		categories = new category[1];
-	//		categories[0] = category(n, w);
-	//	}
 	else{
 		if (numCats == 0){
 			categories = new category[1];
@@ -148,12 +122,7 @@ void section::addCategory(string n, float w){
 				temp[i] = categories[i];
 			}
 			temp[numCats] = category(n, w);
-			//if (numCats == 1){
-			//	delete categories;
-			//}
-			//else{
-				delete[] categories;
-			//}
+			delete[] categories;
 			categories = temp;
 			for (int i = 0; i < numStuds; i++){
 				students[i].addCategory(categories[numCats]);
@@ -162,8 +131,6 @@ void section::addCategory(string n, float w){
 		totalWeight += w;
 		numCats++;
 	}
-
-	//	}
 }
 void section::removeCategory(int index){
 	if (numCats == 1){
@@ -256,7 +223,7 @@ void section::editStudent(int index){
 					cout << "New score: ";
 					cin >> score;
 					students[index].categories[catIndex].assignments[assNum - 1].setPoints(score);
-					cout << endl << "Score: " << students[index].categories[catIndex].assignments[assNum - 1].getPoints() << "/" << categories[catIndex].assignments[assNum - 1].getPoints() << "points";
+					cout << endl << "Score: " << students[index].categories[catIndex].assignments[assNum - 1].getPoints() << "/" << categories[catIndex].assignments[assNum - 1].getPoints() << "points"<<endl;
 				}
 			}
 		}
@@ -326,20 +293,158 @@ void section::removeStudent(int index){
 	students = temp;
 	numStuds--;
 }
-
-void section::printCategories(){
-	/*if (numCats == 1){
-		cout << 1 << ". " << categories << endl;
+float section::averageGrades(int ci, int ai){
+	float addedGrade = 0;
+	float maxGrade = categories[ci].assignments[ai].getPoints() * numStuds;
+	for (int i = 0; i < numStuds; i++){
+		addedGrade += students[i].categories[ci].assignments[ai].getPoints();
 	}
-	else{*/
-		for (int i = 0; i < numCats; i++){
-			cout << i + 1 << ". " << categories[i].name /*<< ": " << categories[i].weight << "%" */ << endl;
+	return addedGrade / maxGrade * 100;
+}
+float section::averageGrades(int ci){
+	float addedGrade = 0;
+	float maxGrade = categories[ci].getPoints() * numStuds;
+	for (int i = 0; i < numStuds; i++){
+		addedGrade += students[i].categories[ci].getPoints();
+	}
+	return addedGrade / maxGrade * 100;
+}
+float section::averageGrades(){
+	float totalGrade = 0;
+	for (int i = 0; i < numStuds; i++){
+		float studGrade = 0;
+		for (int ci = 0; ci < numCats; ci++){
+			studGrade += students[i].categories[ci].getPoints() / categories[ci].getPoints() * categories[ci].weight;
 		}
-//	}
-	
+		totalGrade += studGrade;
+	}
+	return totalGrade / numStuds;
+}
+void section::printCategories(){
+	for (int i = 0; i < numCats; i++){
+		cout << i + 1 << ". " << categories[i].name /*<< ": " << categories[i].weight << "%" */ << endl;
+	}
 }
 void section::printStudents(){
 	for (int i = 0; i < numStuds; i++){
 		cout << i + 1 << ". " << students[i].name << endl;
+	}
+}
+float section::fetchGrade(int si){
+	float grade = 0;
+	for (int i = 0; i < numCats; i++){
+		grade += students[si].getPoints(i) / categories[i].getPoints() * categories[i].weight;
+	}
+	return grade;
+}
+float section::fetchGrade(int si, int ci){
+	return students[si].getPoints(ci) / categories[ci].getPoints() * 100;
+}
+void section::save(int ci){
+	ofstream outFile;
+	string fileName = name;
+	fileName.append("-");
+	fileName.append(categories[ci].name);
+	fileName.append(".csv");
+	//check if file open successful
+	outFile.open(fileName);
+	if (!outFile.is_open()){
+		cout << "Save unsuccessful. Please ensure that the category name does not contain special characters and try again." << endl;
+		return;
+	}
+	else{
+		//names of assignments
+		outFile << " ";
+		for (int i = 0; i < categories[ci].numAssignments + 1; i++){
+			if (i = categories[ci].numAssignments){
+				outFile << "Grade" << endl;
+			}
+			else{
+				outFile << categories[ci].assignments[i].name;
+			}
+		}
+		//max points of each assignment
+		outFile << " ";
+		for (int i = 0; i < categories[ci].numAssignments + 1; i++){
+			if (i = categories[ci].numAssignments){
+				stringstream ss;
+				ss << categories[ci].weight << " % of grade";
+				outFile << ss.str() << endl;
+			}
+			else{
+				outFile << categories[ci].assignments[i].getPoints();
+			}
+		}
+		//students' scores
+		for (int i = 0; i < numStuds; i++){
+			outFile << students[i].name;
+			for (int j = 0; j < students[i].categories[ci].numAssignments; j++){
+				outFile << students[i].categories[ci].assignments[j].getPoints();
+			}
+			outFile << fetchGrade(i,ci)<<endl;
+		}
+		//averages
+		outFile << "averages (%):";
+		for (int i = 0; i < categories[ci].numAssignments; i++){
+			outFile << averageGrades(ci, i);
+		}
+		outFile << averageGrades(ci) << endl;
+		//close file
+		outFile.close();
+		cout << "Category " << "\"" << categories[ci].name << "\"" << " saved successfully." << endl;
+	}
+}
+void section::save(){
+	ofstream outFile;
+	string fileName = name;
+	fileName.append(".csv");
+	//check if file open successful
+	outFile.open(fileName);
+	if (!outFile.is_open()){
+		cout << "Save unsuccessful. Please ensure that the section name does not contain special characters and try again." << endl;
+		return;
+	}
+	else{
+		//category names
+		outFile << " ";
+		for (int i = 0; i < numCats; i++){
+			outFile << categories[i].name;
+		}
+		outFile << "Total" << endl;
+		//category weight
+		outFile << "weight:";
+		for (int i = 0; i < numCats; i++){
+			stringstream ss;
+			ss << categories[i].weight << " %";
+			outFile << ss.str();
+		}
+		stringstream sss;
+		sss << totalWeight << " %";
+		outFile << sss.str()<<endl;
+		//students' category grades
+		for (int i = 0; i < numStuds; i++){
+			outFile << students[i].name;
+			for (int j = 0; j < students[i].numCats; j++){
+				stringstream ss;
+				ss << fetchGrade(i,j) << " %";
+				outFile << ss.str();
+			}
+			stringstream ss;
+			ss << fetchGrade(i) << " %";
+			outFile << ss.str()<<endl;
+		}
+		//average grades
+		outFile << "Averages:";
+		for (int i = 0; i < numCats; i++){
+			stringstream ss;
+			ss << averageGrades(i) << " %";
+			outFile << ss.str();
+		}
+		stringstream ss;
+		ss << averageGrades() << " %";
+		outFile << ss.str() << endl;
+		//close file
+		outFile.close();
+		cout << "Section " << "\"" << name << "\"" << " saved successfully." << endl;
 	}
 }

@@ -267,6 +267,7 @@ int main(){
 				section1->save(i);
 			}
 			section1->save();
+			cout << "Saved files contained in program directory.";
 			continue;
 		}
 		else if (option == 7){

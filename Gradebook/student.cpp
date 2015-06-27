@@ -25,18 +25,18 @@ void student::addCategory(category c){
 		for (int i = 0; i < numCats; i++){
 			temp[i] = categories[i];
 		}
-		categories[numCats].name = c.name;
-		categories[numCats].numAssignments = 0;
-		categories[numCats].weight = c.weight;
+		temp[numCats].name = c.name;
+		temp[numCats].numAssignments = 0;
+		temp[numCats].weight = c.weight;
 		for (int i = 0; i < c.numAssignments; i++){
-			categories[numCats].addAssignmentUnit(0.0, c.assignments[i].name);
+			temp[numCats].addAssignmentUnit(0.0, c.assignments[i].name);
 		}
-		if (numCats == 1){
+		/*if (numCats == 1){
 			delete categories;
 		}
-		else{
+		else{*/
 			delete[] categories;
-		}
+		//}
 		categories = temp;
 	}
 	numCats++;

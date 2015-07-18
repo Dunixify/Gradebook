@@ -28,7 +28,9 @@ int main(){
 			float weight;
 			int numCatsBefore = section1->numCats;
 			cout << "Category name: ";
-			cin >> name;
+			cin.clear();
+			cin.sync();
+			getline(cin, name);
 			cout << "Category weight (as a percentage): ";
 			cin >> weight;
 			section1->addCategory(name, weight);
@@ -39,7 +41,9 @@ int main(){
 		else if (option == 2){
 			string name;
 			cout << "Student name: ";
-			cin >> name;
+			cin.clear();
+			cin.sync();
+			getline(cin, name);
 			cout << endl;
 			section1->addStudent(name);
 			cout << "Student " << "\"" << name << "\" added to section \"" << section1->name << ".\"" << endl;

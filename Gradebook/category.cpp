@@ -32,7 +32,9 @@ void category::editAssignmentUnit(int index){
 			string name;
 			cout << "Assignment name: " << assignments[index].name << endl;
 			cout << "New name: ";
-			cin >> name;
+			cin.clear();
+			cin.sync();
+			getline(cin, name);
 			assignments[index].name = name;
 		}
 		else if (option == 2){

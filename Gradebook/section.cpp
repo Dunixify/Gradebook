@@ -40,7 +40,9 @@ void section::editCategory(int index){
 			string name;
 			cout << "category name: " << categories[index].name << endl;
 			cout << "New name: ";
-			cin >> name;
+			cin.clear();
+			cin.sync();
+			getline(cin, name);
 			categories[index].name = name;
 		}
 		else if (option == 2){
@@ -79,7 +81,9 @@ void section::editCategory(int index){
 			string name;
 			float points;
 			cout << "Assignment name: ";
-			cin >> name;
+			cin.clear();
+			cin.sync();
+			getline(cin, name);
 			cout << "Points: ";
 			cin >> points;
 			categories[index].addAssignmentUnit(points, name);
@@ -190,7 +194,9 @@ void section::editStudent(int index){
 			string name;
 			cout << "Current name: " << students[index].name << endl;
 			cout << "New name: ";
-			cin >> name;
+			cin.clear();
+			cin.sync();
+			getline(cin, name);
 			students[index].name = name;
 		}
 		else if (option == 2){
